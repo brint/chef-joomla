@@ -17,13 +17,21 @@
 # Joomla Configuration
 default['joomla']['download_url'] = "http://joomlacode.org/gf/download/frsrelease/18622/83487/Joomla_3.1.5-Stable-Full_Package.zip"
 default['joomla']['dir'] = "/var/www/joomla"
+default['joomla']['config_file'] = "configuration.php"
 default['joomla']['domain'] = "example.com"
 default['joomla']['system_packages'] = %w[ php5-mysql ]
 
 default['joomla']['web_port'] = 80
 
-# Varnish configuration
-default['joomla']['use_varnish'] = true
+default['joomla']['use_gzip'] = true # nginx gzip compression
+default['joomla']['use_varnish'] = true # web cache
+# TODO: Finish memcache support
+default['joomla']['session_handler'] = "database" # database or memcache
+
+# Memcached configuration
+# Memcache does not yet support multiple memcached servers
+# Setting up as an array in anticipation of future capability
+default['joomla']['memcache']['servers'] = [ "127.0.0.1:11211" ] # Array IP:Port
 
 # Database Configuration
 ::Chef::Node.send(:include, Opscode::OpenSSL::Password)

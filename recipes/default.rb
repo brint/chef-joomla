@@ -82,3 +82,5 @@ end
 
 
 include_recipe "joomla::varnish" if node['joomla']['use_varnish']
+
+include_recipe "joomla::memcache" if node['joomla']['session_handler'] == "memcache"
