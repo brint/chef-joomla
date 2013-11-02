@@ -1,0 +1,105 @@
+backend default {
+        .host = "<%= node['varnish']['backend_host'] %>";
+        .port = "<%= node['varnish']['backend_port'] %>";
+}
+
+# VCL from:
+#    http://www.allenyu.info/item/29-using-varnish-cache-to-speed-up-joomla-cms.html
+ 
+# This Varnish configuration makes use of a custom HTTP header to determine whether
+# some user is logged in or not inside Joomla! To allow this, simply append this code
+#       // Set user state in headers
+#               if (!$user->guest) {
+#                       JResponse::setHeader('X-Logged-In', 'True', true);
+#               } else {
+#                       JResponse::setHeader('X-Logged-In', 'False', true);
+#               }
+# on the "function onAfterInitialise(){ ... } function, right after "$user= JFactory::getUser();"
+# in the Joomla! cache plugin php file located at /plugins/system/cache/cache.php
+# Finally, enable this plugin via the Joomla! backend.
+# If you don't want to use the cache plugin, add this code in your template's index.php file.
+# Don't forget to prepend it with "$user = JFactory::getUser();"
+ 
+# The following setup assumes a 5 min cache time - you can safely drop this to 1 min for popular/busy sites
+ 
+sub vcl_recv {
+ 
+        # Forward client's IP to backend
+        remove req.http.X-Forwarded-For;
+        set req.http.X-Forwarded-For = client.ip;
+ 
+        # Proxy (pass) any request that goes to the backend admin,
+        # the banner component links or any post requests
+        # You can add more pages or entire URL structure in the end of the "if"
+        if(req.http.cookie ~ "userID" || req.url ~ "^/administrator" || req.url ~ "^/component/banners" || req.request == "POST") {
+                return (pass);
+        }
+ 
+        # Check for the custom "x-logged-in" header to identify if the visitor is a guest,
+        # then unset any cookie (including session cookies) provided it's not a POST request
+        if(req.http.x-logged-in == "False" && req.request != "POST"){
+                unset req.http.cookie;
+        }
+ 
+        # Properly handle different encoding types
+        if (req.http.Accept-Encoding) {
+          if (req.url ~ "\.(jpg|jpeg|png|gif|gz|tgz|bz2|tbz|mp3|ogg|swf)$") {
+            # No point in compressing these
+            remove req.http.Accept-Encoding;
+          } elsif (req.http.Accept-Encoding ~ "gzip") {
+            set req.http.Accept-Encoding = "gzip";
+          } elsif (req.http.Accept-Encoding ~ "deflate") {
+            set req.http.Accept-Encoding = "deflate";
+          } else {
+            # unknown algorithm (aka crappy browser)
+            remove req.http.Accept-Encoding;
+          }
+        }
+        # Cache files with these extensions
+        if (req.url ~ "\.(js|css|jpg|jpeg|png|gif|gz|tgz|bz2|tbz|mp3|ogg|swf)$") {
+                return (lookup);
+        }
+ 
+        # Set how long Varnish will cache content depending on whether your backend is healthy or not
+        if (req.backend.healthy) {
+                set req.grace = 5m;
+        } else {
+                set req.grace = 10m;
+        }
+ 
+        return (lookup);
+}
+ 
+sub vcl_fetch {
+ 
+        # Check for the custom "x-logged-in" header to identify if the visitor is a guest,
+        # then unset any cookie (including session cookies) provided it's not a POST request
+        if(req.request != "POST" && beresp.http.x-logged-in == "False") {
+                unset beresp.http.Set-Cookie;
+        }
+ 
+        # Allow items to be stale if needed (this value should be the same as with "set req.grace"
+        # inside the sub vcl_recv {.} block (the 2nd part of the if/else statement)
+        set beresp.grace = 1h;
+ 
+        # Serve pages from the cache should we get a sudden error and re-check in one minute
+        if (beresp.status == 503 || beresp.status == 502 || beresp.status == 501 || beresp.status == 500) {
+          set beresp.grace = 60s;
+          return (restart);
+        }
+ 
+        # Unset the "etag" header (suggested)
+        unset beresp.http.etag;
+ 
+        # This is Joomla! specific: fix stupid "no-cache" header sent by Joomla! even
+        # when caching is on - make sure to replace 300 with the number of seconds that
+        # you want the browser to cache content
+        if(beresp.http.Cache-Control == "no-cache" || beresp.http.Cache-Control == ""){
+                set beresp.http.Cache-Control = "max-age=300, public, must-revalidate";
+        }
+ 
+        # This is how long Varnish will cache content
+        set beresp.ttl = 5m;
+ 
+        return (deliver);
+}

@@ -16,3 +16,11 @@
 #
 
 include_recipe "varnish::default"
+
+template File.join(node['varnish']['dir'], node['varnish']['vcl_conf']) do
+  source node['varnish']['vcl_source']
+  owner "root"
+  group "root"
+  mode 0644
+  notifies :restart, "service[varnish]", :delayed
+end
