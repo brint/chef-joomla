@@ -20,6 +20,11 @@ default['joomla']['dir'] = "/var/www/joomla"
 default['joomla']['domain'] = "example.com"
 default['joomla']['system_packages'] = %w[ php5-mysql ]
 
+default['joomla']['web_port'] = 80
+
+# Varnish configuration
+default['joomla']['use_varnish'] = true
+
 # Database Configuration
 ::Chef::Node.send(:include, Opscode::OpenSSL::Password)
 

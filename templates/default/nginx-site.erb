@@ -1,5 +1,5 @@
 server {
-        listen 80;
+        listen <%= node['joomla']['web_port'] %>;
         server_name <%= node['joomla']['domain'] %>;
         server_name_in_redirect off;
 

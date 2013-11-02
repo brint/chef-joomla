@@ -16,7 +16,6 @@
 #
 
 include_recipe "mysql::ruby"
-include_recipe "nginx::default"
 include_recipe "zip::default"
 
 # Install system packages
@@ -35,8 +34,7 @@ end
 # Install PHP-FPM
 include_recipe "php-fpm::default"
 
-
-### Joomla install section
+# Joomla install section
 
 directory node['joomla']['dir'] do
   owner node['php-fpm']['pool']['joomla']['user']
@@ -66,6 +64,10 @@ bash "Ensure correct permissions & ownership" do
   EOH
 end
 
+# Nginx Configuration
+node.set['joomla']['web_port'] = 8080 if node['joomla']['use_varnish']
+
+include_recipe "nginx::default"
 
 template "#{node['nginx']['dir']}/sites-available/#{node['joomla']['domain']}.conf" do
   source "nginx-site.erb"
@@ -77,3 +79,6 @@ end
 nginx_site "#{node['joomla']['domain']}.conf" do
   notifies :reload, resources(:service => "nginx")
 end
+
+
+include_recipe "joomla::varnish" if node['joomla']['use_varnish']
