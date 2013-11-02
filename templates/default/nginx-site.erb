@@ -1,6 +1,6 @@
 server {
         listen <%= node['joomla']['web_port'] %>;
-        server_name <%= node['joomla']['domain'] %>;
+        server_name <%= node['joomla']['domain'] %><% unless node['joomla']['domain_aliases'].empty? %> <%= node['joomla']['domain_aliases'].join(" ") %><% end %>;
         server_name_in_redirect off;
 
         access_log /var/log/nginx/<%= node['joomla']['domain'] %>.access_log;

@@ -74,6 +74,7 @@ template "#{node['nginx']['dir']}/sites-available/#{node['joomla']['domain']}.co
   owner "root"
   group "root"
   mode 0644
+  notifies :restart, "service[nginx]", :delayed
 end
 
 nginx_site "#{node['joomla']['domain']}.conf" do

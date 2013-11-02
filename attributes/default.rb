@@ -19,6 +19,7 @@ default['joomla']['download_url'] = "http://joomlacode.org/gf/download/frsreleas
 default['joomla']['dir'] = "/var/www/joomla"
 default['joomla']['config_file'] = "configuration.php"
 default['joomla']['domain'] = "example.com"
+default['joomla']['domain_aliases'] = [ "www.example.com" ]
 default['joomla']['system_packages'] = %w[ php5-mysql ]
 
 default['joomla']['web_port'] = 80
