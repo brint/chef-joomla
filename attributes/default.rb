@@ -20,9 +20,7 @@
 default['joomla']['user'] = 'joomla'
 default['joomla']['group'] = 'joomla'
 default['joomla']['domain'] = 'example.com'
-default['joomla']['download_url'] = 'http://joomlacode.org/gf/download/frsrele\
-                                     ase/18622/83487/Joomla_3.1.5-Stable-Full_\
-                                     Package.zip'
+default['joomla']['download_url'] = 'http://joomlacode.org/gf/download/frsrelease/19007/134333/Joomla_3.2.1-Stable-Full_Package.zip'
 default['joomla']['dir'] = File.join('/var/www/', node['joomla']['domain'])
 default['joomla']['config_file'] = 'configuration.php'
 default['joomla']['domain_aliases'] = ['www.example.com']
@@ -47,7 +45,7 @@ default['joomla']['memcache']['servers'] = ['127.0.0.1:11211']
 default['joomla']['db']['host'] = 'localhost'
 default['joomla']['db']['user'] = 'joomla'
 set_unless['joomla']['db']['pass'] = secure_password
-default['joomla']['db']['database'] = 'joomla'
+default['joomla']['db']['database'] = 'Joomla16'
 default['joomla']['db']['network_acl'] = ['localhost']
 
 # Nginx Configuration
