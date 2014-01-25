@@ -1,3 +1,4 @@
+# coding: utf-8
 #
 # Cookbook Name:: joomla
 # Recipe:: mysql
@@ -15,23 +16,20 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::ruby"
-include_recipe "mysql::server"
+include_recipe 'mysql::ruby'
+include_recipe 'mysql::server'
 
 mysql_connection_info = {
-  :host     => 'localhost',
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
+  'host'     => 'localhost',
+  'username' => 'root',
+  'password' => node['mysql']['server_root_password']
 }
 
-template "/root/.my.cnf" do
-  source "dotmy.cnf.erb"
-  owner "root"
-  group "root"
-  mode "0600"
-  variables ({
-    :rootpasswd => node['mysql']['server_root_password']
-  })
+template '/root/.my.cnf' do
+  source 'dotmy.cnf.erb'
+  owner 'root'
+  group 'root'
+  mode 0600
 end
 
 # Create Joomla Database

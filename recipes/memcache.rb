@@ -1,3 +1,4 @@
+# coding: utf-8
 #
 # Cookbook Name:: joomla
 # Recipe:: memcache
@@ -18,15 +19,16 @@
 # Install and configure memcache client settings
 # This will not install memcached.
 
-package "php5-memcache" do
+package 'php5-memcache' do
   action :install
-  notifies :restart, "service[php-fpm]", :delayed
+  notifies :restart, 'service[php-fpm]', :delayed
 end
 
-bash "Configure Joomla to use Memcache for Sessions" do
+bash 'Configure Joomla to use Memcache for Sessions' do
   cwd node['joomla']['dir']
   code <<-EOH
-  sed -i 's/public \$session_handler = .*/public $session_handler = \'#{node['joomla']['session_handler']}\';/g' #{node['joomla']['config_file']}
+  sed -i 's/public \$session_handler = .*/public $session_handler = \
+  \'#{node['joomla']['session_handler']}\';/g' #{node['joomla']['config_file']}
   EOH
 end
 
@@ -34,6 +36,8 @@ end
 # http://stackoverflow.com/questions/1260258/how-to-use-memcached-with-joomla
 
 node['joomla']['memcache']['servers'].each do |srv|
-  server, port = srv.split(':')
-  include_recipe "joomla::memcached" if server == "localhost" || server == "127.0.0.1"
+  server, _port = srv.split(':')
+  if server == 'localhost' || server == '127.0.0.1'
+    include_recipe 'joomla::memcached'
+  end
 end

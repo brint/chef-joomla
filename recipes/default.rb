@@ -1,3 +1,4 @@
+# coding: utf-8
 #
 # Cookbook Name:: joomla
 # Recipe:: default
@@ -15,8 +16,8 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::ruby"
-include_recipe "zip::default"
+include_recipe 'mysql::ruby'
+include_recipe 'zip::default'
 
 # Install system packages
 node['joomla']['system_packages'].each do |pkg|
@@ -26,20 +27,20 @@ end
 ### PHP-FPM Configuration
 # Add Joomla user
 user node['php-fpm']['pool']['joomla']['user'] do
-  comment "Joomla User"
+  comment 'Joomla User'
   home node['joomla']['dir']
   system true
 end
 
 # Install PHP-FPM
-include_recipe "php-fpm::default"
+include_recipe 'php-fpm::default'
 
 # Joomla install section
 
 directory node['joomla']['dir'] do
   owner node['php-fpm']['pool']['joomla']['user']
   group node['php-fpm']['pool']['joomla']['group']
-  mode "0755"
+  mode 0755
   action :create
   recursive true
 end
@@ -47,41 +48,44 @@ end
 unless node['joomla']['download_url'].empty?
   remote_file "#{Chef::Config[:file_cache_path]}/joomla.zip" do
     source node['joomla']['download_url']
-    mode "0644"
-    not_if { ::File.exists?(File.join(node['joomla']['dir'], "index.php")) }
+    mode '0644'
+    not_if { ::File.exists?(File.join(node['joomla']['dir'], 'index.php')) }
   end
-  execute "Unzip Joomla" do
+  execute 'Unzip Joomla' do
     cwd node['joomla']['dir']
     command "unzip #{Chef::Config[:file_cache_path]}/joomla.zip"
-    not_if { ::File.exists?(File.join(node['joomla']['dir'], "index.php")) }
+    not_if { ::File.exists?(File.join(node['joomla']['dir'], 'index.php')) }
   end
 end
 
-bash "Ensure correct permissions & ownership" do
+bash 'Ensure correct permissions & ownership' do
   cwd node['joomla']['dir']
   code <<-EOH
-  chown -R #{node['php-fpm']['pool']['joomla']['user']}:#{node['php-fpm']['pool']['joomla']['group']} #{node['joomla']['dir']}
+  chown -R #{node['joomla']['user']}:#{node['joomla']['group']} \
+  #{node['joomla']['dir']}
   EOH
 end
 
 # Nginx Configuration
 node.set['joomla']['web_port'] = 8080 if node['joomla']['use_varnish']
 
-include_recipe "nginx::default"
+include_recipe 'nginx::default'
 
-template "#{node['nginx']['dir']}/sites-available/#{node['joomla']['domain']}.conf" do
-  source "nginx-site.erb"
-  owner "root"
-  group "root"
+template File.join(node['nginx']['dir'], 'sites-available',
+                   "#{node['joomla']['domain']}.conf") do
+  source 'nginx-site.erb'
+  owner 'root'
+  group 'root'
   mode 0644
-  notifies :restart, "service[nginx]", :delayed
+  notifies :restart, 'service[nginx]', :delayed
 end
 
 nginx_site "#{node['joomla']['domain']}.conf" do
-  notifies :reload, "service[nginx]"
+  notifies :reload, 'service[nginx]'
 end
 
+include_recipe 'joomla::varnish' if node['joomla']['use_varnish']
 
-include_recipe "joomla::varnish" if node['joomla']['use_varnish']
-
-include_recipe "joomla::memcache" if node['joomla']['session_handler'] == "memcache"
+if node['joomla']['session_handler'] == 'memcache'
+  include_recipe 'joomla::memcache'
+end

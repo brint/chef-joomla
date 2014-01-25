@@ -1,3 +1,5 @@
+# coding: utf-8
+#
 # Cookbook Name:: joomla
 # Attributes:: mysql
 #

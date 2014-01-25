@@ -1,3 +1,5 @@
+# coding: utf-8
+#
 # Cookbook Name:: joomla
 # Attributes:: varnish
 #
@@ -14,7 +16,7 @@
 # limitations under the License.
 #
 
-default['varnish']['storage'] = "malloc"
+default['varnish']['storage'] = 'malloc'
 default['varnish']['storage_size'] = "#{node['memory']['total'].to_i / 4}M"
 default['varnish']['listen_port'] = node['joomla']['web_port']
-default['varnish']['instance'] = "joomla"
+default['varnish']['instance'] = 'joomla'

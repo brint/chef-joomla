@@ -1,3 +1,5 @@
+# coding: utf-8
+#
 # Cookbook Name:: joomla
 # Attributes:: memcached
 #
@@ -14,6 +16,6 @@
 # limitations under the License.
 #
 
-default['memcached']['listen'] = "127.0.0.1"
-default['memcached']['port'] = 11211
-default['memcached']['udp_port'] = 11211
+default['memcached']['listen'] = '127.0.0.1'
+default['memcached']['port'] = 11_211
+default['memcached']['udp_port'] = 11_211
