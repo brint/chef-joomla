@@ -35,5 +35,5 @@ end
 
 node['joomla']['memcache']['servers'].each do |srv|
   server, port = srv.split(':')
-  include_recipe "joomla:memcached" if server == "localhost" || server == "127.0.0.1"
+  include_recipe "joomla::memcached" if server == "localhost" || server == "127.0.0.1"
 end

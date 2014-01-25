@@ -78,7 +78,7 @@ template "#{node['nginx']['dir']}/sites-available/#{node['joomla']['domain']}.co
 end
 
 nginx_site "#{node['joomla']['domain']}.conf" do
-  notifies :reload, resources(:service => "nginx")
+  notifies :reload, "service[nginx]"
 end
 
 

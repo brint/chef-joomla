@@ -16,4 +16,4 @@
 #
 
 # Install and configure memcached service
-include_recipe "memcached:default"
+include_recipe "memcached::default"
