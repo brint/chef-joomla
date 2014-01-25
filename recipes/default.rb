@@ -29,6 +29,7 @@ end
 user node['php-fpm']['pool']['joomla']['user'] do
   comment 'Joomla User'
   home node['joomla']['dir']
+  shell '/bin/bash'
   system true
 end
 
@@ -36,7 +37,6 @@ end
 include_recipe 'php-fpm::default'
 
 # Joomla install section
-
 directory node['joomla']['dir'] do
   owner node['php-fpm']['pool']['joomla']['user']
   group node['php-fpm']['pool']['joomla']['group']
@@ -58,6 +58,54 @@ unless node['joomla']['download_url'].empty?
   end
 end
 
+# Configure Joomla
+if node['joomla']['cli_configure'] &&
+                  !File.exists?(File.join(node['joomla']['dir'], '.installed'))
+  template File.join(node['joomla']['dir'], 'configuration.php') do
+    source 'configuration.php.erb'
+    owner node['php-fpm']['pool']['joomla']['user']
+    group node['php-fpm']['pool']['joomla']['group']
+    mode 0644
+  end
+
+  # Database Configuration stuff
+  case node['joomla']['db']['type']
+  when 'mysql'
+    bash 'Correct SQL table prefixes before import' do
+      cwd File.join(node['joomla']['dir'], 'installation', 'sql', 'mysql')
+      code <<-EOH
+      sed -i 's/#__/#{node['joomla']['jconfig']['dbprefix']}/g' joomla.sql
+      EOH
+    end
+
+    connection_string = "-u#{node['joomla']['db']['user']} \
+                         -p#{node['joomla']['db']['pass']} \
+                         -h #{node['joomla']['db']['host']} \
+                         #{node['joomla']['db']['database']}"
+
+    bash 'Import base joomla.sql' do
+      code <<-EOH
+      mysql #{connection_string} < \
+      #{File.join(node['joomla']['dir'], 'installation', 'sql', 'mysql',
+                  'joomla.sql')}
+      EOH
+    end
+  else
+    log "Unable to setup database for #{node['joomla']['db']['type']}"
+  end
+
+  directory 'Remove Joomla Install directory' do
+    path File.join(node['joomla']['dir'], 'installation')
+    action :delete
+    recursive true
+  end
+
+  bash 'Touch installed file' do
+    cwd node['joomla']['dir']
+    code 'touch .installed'
+  end
+end
+
 bash 'Ensure correct permissions & ownership' do
   cwd node['joomla']['dir']
   code <<-EOH
@@ -67,7 +115,8 @@ bash 'Ensure correct permissions & ownership' do
 end
 
 # Nginx Configuration
-node.set['joomla']['web_port'] = 8080 if node['joomla']['use_varnish']
+node.set['joomla']['nginx_port'] = node['joomla']['web_port']
+node.set['joomla']['nginx_port'] = 8080 if node['joomla']['use_varnish']
 
 include_recipe 'nginx::default'
 

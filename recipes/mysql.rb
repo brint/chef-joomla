@@ -20,9 +20,9 @@ include_recipe 'mysql::ruby'
 include_recipe 'mysql::server'
 
 mysql_connection_info = {
-  :host     => 'localhost',
-  :username => 'root',
-  :password => node['mysql']['server_root_password']
+  host:     'localhost',
+  username: 'root',
+  password: node['mysql']['server_root_password']
 }
 
 template '/root/.my.cnf' do

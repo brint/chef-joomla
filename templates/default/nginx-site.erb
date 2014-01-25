@@ -1,5 +1,5 @@
 server {
-        listen <%= node['joomla']['web_port'] %>;
+        listen <%= node['joomla']['nginx_port'] %>;
         server_name <%= node['joomla']['domain'] %><% unless node['joomla']['domain_aliases'].empty? %> <%= node['joomla']['domain_aliases'].join(" ") %><% end %>;
         server_name_in_redirect off;
 
@@ -27,7 +27,7 @@ server {
             include /etc/nginx/fastcgi_params;
         }
 
-        # caching of files 
+        # caching of files
         location ~* \.(ico|pdf|flv)$ {
                 expires 1y;
         }
@@ -35,7 +35,7 @@ server {
         location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$ {
                 expires 14d;
         }
-        <%- if node['joomla']['use_gzip'] %>
+        <%- if node['joomla']['use_gzip'] == '1' %>
         gzip on;
         gzip_http_version 1.1;
         gzip_comp_level 6;

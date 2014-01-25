@@ -1,0 +1,99 @@
+<?php
+/**
+ * @package		Joomla
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters. All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * -------------------------------------------------------------------------
+ * THIS SHOULD ONLY BE USED AS A LAST RESORT WHEN THE WEB INSTALLER FAILS
+ *
+ * If you are installing Joomla! manually i.e. not using the web browser installer
+ * then rename this file to configuration.php e.g.
+ *
+ * UNIX -> mv configuration.php-dist configuration.php
+ * Windows -> rename configuration.php-dist configuration.php
+ *
+ * Now edit this file and configure the parameters for your site and
+ * database.
+ */
+class JConfig {
+	/* Site Settings */
+	public $offline = '<%= node['joomla']['jconfig']['offline'] %>';
+	public $offline_message = '<%= node['joomla']['jconfig']['offline_message'] %>';
+	public $display_offline_message = '<%= node['joomla']['jconfig']['display_offline_message'] %>';
+	public $offline_image = '<%= node['joomla']['jconfig']['offline_image'] %>';
+	public $sitename = '<%= node['joomla']['jconfig']['sitename'] %>';				// Name of Joomla site
+	public $editor = '<%= node['joomla']['jconfig']['editor'] %>';
+	public $captcha = '<%= node['joomla']['jconfig']['captcha'] %>';
+	public $list_limit = '<%= node['joomla']['jconfig']['list_limit'] %>';
+	public $root_user = '<%= node['joomla']['jconfig']['root_user'] %>';
+	public $access = '<%= node['joomla']['jconfig']['access'] %>';
+
+	/* Database Settings */
+	public $dbtype = '<%= node['joomla']['jconfig']['dbtype'] %>';					// Normally mysql
+	public $host = '<%= node['joomla']['jconfig']['host'] %>';					// This is normally set to localhost
+	public $user = '<%= node['joomla']['jconfig']['user'] %>';							// DB username
+	public $password = '<%= node['joomla']['jconfig']['password'] %>';						// DB password
+	public $db = '<%= node['joomla']['jconfig']['db'] %>';							// DB database name
+	public $dbprefix = '<%= node['joomla']['jconfig']['dbprefix'] %>';					// Do not change unless you need to!
+
+	/* Server Settings */
+	public $secret = '<%= node['joomla']['jconfig']['secret'] %>'; 		// Change this to something more secure
+	public $gzip = '<%= node['joomla']['jconfig']['gzip'] %>';
+	public $error_reporting = '<%= node['joomla']['jconfig']['error_reporting'] %>';
+	public $helpurl = '<%= node['joomla']['jconfig']['helpurl'] %>';
+	public $ftp_host = '<%= node['joomla']['jconfig']['ftp_host'] %>';
+	public $ftp_port = '<%= node['joomla']['jconfig']['ftp_port'] %>';
+	public $ftp_user = '<%= node['joomla']['jconfig']['ftp_user'] %>';
+	public $ftp_pass = '<%= node['joomla']['jconfig']['ftp_pass'] %>';
+	public $ftp_root = '<%= node['joomla']['jconfig']['ftp_root'] %>';
+	public $ftp_enable = '<%= node['joomla']['jconfig']['ftp_enable'] %>';
+	public $tmp_path = '<%= node['joomla']['jconfig']['tmp_path'] %>';
+	public $log_path = '<%= node['joomla']['jconfig']['log_path'] %>';
+	public $live_site = '<%= node['joomla']['jconfig']['live_site'] %>'; 					// Optional, Full url to Joomla install.
+	public $force_ssl = <%= node['joomla']['jconfig']['force_ssl'] %>;						// Force areas of the site to be SSL ONLY.  0 = None, 1 = Administrator, 2 = Both Site and Administrator
+
+	/* Locale Settings */
+	public $offset = '<%= node['joomla']['jconfig']['offset'] %>';
+
+	/* Session settings */
+	public $lifetime = '<%= node['joomla']['jconfig']['lifetime'] %>';					// Session time
+	public $session_handler = '<%= node['joomla']['jconfig']['session_handler'] %>';
+
+	/* Mail Settings */
+	public $mailer = '<%= node['joomla']['jconfig']['mailer'] %>';
+	public $mailfrom = '<%= node['joomla']['jconfig']['mailfrom'] %>';
+	public $fromname = '<%= node['joomla']['jconfig']['fromname'] %>';
+	public $sendmail = '<%= node['joomla']['jconfig']['sendmail'] %>';
+	public $smtpauth = '<%= node['joomla']['jconfig']['smtpauth'] %>';
+	public $smtpuser = '<%= node['joomla']['jconfig']['smtpuser'] %>';
+	public $smtppass = '<%= node['joomla']['jconfig']['smtppass'] %>';
+	public $smtphost = '<%= node['joomla']['jconfig']['smtphost'] %>';
+
+	/* Cache Settings */
+	public $caching = '<%= node['joomla']['jconfig']['caching'] %>';
+	public $cachetime = '<%= node['joomla']['jconfig']['cachetime'] %>';
+	public $cache_handler = '<%= node['joomla']['jconfig']['cache_handler'] %>';
+
+	/* Debug Settings */
+	public $debug = '<%= node['joomla']['jconfig']['debug'] %>';
+	public $debug_lang = '<%= node['joomla']['jconfig']['debug_lang'] %>';
+
+	/* Meta Settings */
+	public $MetaDesc = '<%= node['joomla']['jconfig']['MetaDesc'] %>';
+	public $MetaKeys = '<%= node['joomla']['jconfig']['MetaKeys'] %>';
+	public $MetaTitle = '<%= node['joomla']['jconfig']['MetaTitle'] %>';
+	public $MetaAuthor = '<%= node['joomla']['jconfig']['MetaAuthor'] %>';
+	public $MetaVersion = '<%= node['joomla']['jconfig']['MetaVersion'] %>';
+	public $robots = '<%= node['joomla']['jconfig']['robots'] %>';
+
+	/* SEO Settings */
+	public $sef = '<%= node['joomla']['jconfig']['sef'] %>';
+	public $sef_rewrite = '<%= node['joomla']['jconfig']['sef_rewrite'] %>';
+	public $sef_suffix = '<%= node['joomla']['jconfig']['sef_suffix'] %>';
+	public $unicodeslugs = '<%= node['joomla']['jconfig']['unicodeslugs'] %>';
+
+	/* Feed Settings */
+	public $feed_limit = <%= node['joomla']['jconfig']['feed_limit'] %>;
+	public $feed_email = '<%= node['joomla']['jconfig']['feed_email'] %>';
+}
