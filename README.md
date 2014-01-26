@@ -1,6 +1,8 @@
 chef-joomla
 ===========
 
+[![Build Status](https://travis-ci.org/brint/chef-joomla.png?branch=master)](https://travis-ci.org/brint/chef-joomla)
+
 Still tinkering.  Doing dev with rackspace-vagrant.
 
 Cookbook to install [Joomla](http://www.joomla.org/) with
