@@ -1,0 +1,4 @@
+knife test: bundle exec knife cookbook test $COOKBOOK
+foodcritic: bundle exec foodcritic -f any cookbooks/$COOKBOOK
+rubocop: bundle exec rubocop
+foodcritic: bundle exec foodcritic -f any .
