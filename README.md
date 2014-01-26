@@ -2,6 +2,7 @@ chef-joomla
 ===========
 
 [![Build Status](https://travis-ci.org/brint/chef-joomla.png?branch=master)](https://travis-ci.org/brint/chef-joomla)
+[![Dependency Status](https://gemnasium.com/brint/chef-joomla.png)](https://gemnasium.com/brint/chef-joomla)
 
 Still tinkering.  Doing dev with rackspace-vagrant.
 
