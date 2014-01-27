@@ -5,7 +5,7 @@ rvm:
   - 2.1.0
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
-  - "echo 'deb http://download.virtualbox.org/virtualbox/debian precise contrib' >> /etc/apt/sources.list"
+  - "sudo echo 'deb http://download.virtualbox.org/virtualbox/debian precise contrib' >> /etc/apt/sources.list"
   - "wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | sudo apt-key add -"
   - "sudo apt-get update"
   - "sudo apt-get install -y virtualbox-4.3"
