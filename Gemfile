@@ -5,8 +5,8 @@ gem 'rubocop'
 gem 'foodcritic', '~>3.0.0'
 gem 'berkshelf'
 gem 'strainer'
+gem 'test-kitchen'
 
 group :integration do
-  gem 'test-kitchen'
   gem 'kitchen-vagrant'
 end

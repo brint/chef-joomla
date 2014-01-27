@@ -1,0 +1,29 @@
+---
+driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: true
+
+platforms:
+- name: ubuntu-12.04
+
+suites:
+- name: default
+  run_list:
+  - recipe[apt::default]
+  - recipe[joomla::mysql]
+  - recipe[joomla::default]
+  - recipe[joomla::firewall]
+  attributes: {
+    php-fpm: {
+      pools: [
+        {
+          name: 'joomla'
+        }
+      ]
+    },
+    mysql: {
+      server_root_password: 'rootpass1',
+      server_debian_password: 'debpass1',
+      server_repl_password: 'replpass1'
+    }
+  }
