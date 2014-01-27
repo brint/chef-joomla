@@ -5,6 +5,7 @@ rvm:
   - 2.1.0
 before_install:
   - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - "sudo dpkg -i https://dl.bintray.com/mitchellh/vagrant/vagrant_1.4.3_x86_64.deb"
 script:
   - bundle exec foodcritic -f any .
   - bundle exec rubocop
