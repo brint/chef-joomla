@@ -90,6 +90,30 @@ if node['joomla']['cli_configure'] &&
                   'joomla.sql')}
       EOH
     end
+
+    # Setup Admin User
+    user_file = '/root/user.sql'
+    template user_file do
+      source 'user.sql.erb'
+      owner 'root'
+      group 'root'
+      mode 0600
+      variables(
+        name: node['joomla']['admin_user']['name'],
+        username: node['joomla']['admin_user']['username'],
+        password: node['joomla']['admin_user']['password'],
+        email: node['joomla']['admin_user']['email'],
+        gid: 8
+      )
+    end
+
+    bash 'Initialize admin user' do
+      code <<-EOH
+      mysql #{connection_string} < #{user_file}
+      rm -f #{user_file}
+      EOH
+    end
+
   else
     log "Unable to setup database for #{node['joomla']['db']['type']}"
   end

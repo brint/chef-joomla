@@ -1,0 +1,5 @@
+INSERT INTO jos_users( `name`, `username`, `password`, `email`)
+VALUES( '<%= @name %>', '<%= @username %>', md5('<%= @password %>'), '<%= @email %>' );
+
+INSERT INTO jos_user_usergroup_map( `user_id`, `group_id` )
+VALUES ( LAST_INSERT_ID(), <%= @gid %> );

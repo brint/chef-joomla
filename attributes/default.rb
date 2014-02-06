@@ -21,7 +21,7 @@ default['joomla']['user'] = 'joomla'
 default['joomla']['group'] = 'joomla'
 default['joomla']['domain'] = 'example.com'
 default['joomla']['download_url'] = 'http://joomlacode.org/gf/download/frsrel'\
-                                    'ease/19007/134333/Joomla_3.2.1-Stable-Fu'\
+                                    'ease/19143/157504/Joomla_3.2.2-Stable-Fu'\
                                     'll_Package.zip'
 default['joomla']['dir'] = File.join('/var/www', node['joomla']['domain'])
 default['joomla']['config_file'] = 'configuration.php'
@@ -56,6 +56,11 @@ default['joomla']['db']['network_acl'] = ['localhost']
 # versions of Joomla.  To enable CLI configuration, set the 'cli_configure'
 # attribute to true.
 default['joomla']['cli_configure'] = false
+default['joomla']['admin_user']['name'] = 'Admin User'
+default['joomla']['admin_user']['username'] = 'admin'
+set_unless['joomla']['admin_user']['password'] = secure_password
+default['joomla']['admin_user']['email'] = 'admin@localhost'
+
 default['joomla']['jconfig']['offline'] = '0'
 default['joomla']['jconfig']['offline_message'] = 'This site is down for
                                                    maintenance.<br /> Please
