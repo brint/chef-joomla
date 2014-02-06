@@ -2,3 +2,4 @@
 Vagrantfile
 .kitchen/
 .kitchen.local.yml
+tmp/
