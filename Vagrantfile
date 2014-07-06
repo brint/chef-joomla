@@ -4,9 +4,10 @@
 Vagrant.configure("2") do |config|
   config.vm.hostname = "cookbook-joomla"
   config.vm.box = "vagrant-ubuntu-12.04"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box = "ubuntu-12.04"
+  config.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_#{config.vm.box}_chef-provisionerless.box"
   config.vm.network :private_network, ip: "33.33.33.10"
-  config.omnibus.chef_version = "11.6.0"
+  config.omnibus.chef_version = :latest
   config.berkshelf.enabled = true
 
   config.vm.provision :chef_solo do |chef|

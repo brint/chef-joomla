@@ -15,8 +15,9 @@ recipe           'joomla::mysql', 'Performs MySQL installation and
 end
 
 %w{ apt yum nginx mysql database openssl php firewall iptables-ng
-    memcached varnish zip }.each do |cb|
+    mysql-chef_gem memcached varnish zip }.each do |cb|
   depends cb
 end
 
-depends 'php-fpm', '>= 0.5.0'
+depends 'mysql', '~> 5.3.6'
+depends 'php-fpm', '~> 0.6.0'

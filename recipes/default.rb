@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-include_recipe 'mysql::ruby'
+include_recipe 'mysql-chef_gem'
 include_recipe 'zip::default'
 
 # Install system packages
@@ -26,7 +26,7 @@ end
 
 ### PHP-FPM Configuration
 # Add Joomla user
-user node['php-fpm']['pool']['joomla']['user'] do
+user node['joomla']['user'] do
   comment 'Joomla User'
   home node['joomla']['dir']
   shell '/bin/bash'
@@ -38,8 +38,8 @@ include_recipe 'php-fpm::default'
 
 # Joomla install section
 directory node['joomla']['dir'] do
-  owner node['php-fpm']['pool']['joomla']['user']
-  group node['php-fpm']['pool']['joomla']['group']
+  owner node['joomla']['user']
+  group node['joomla']['group']
   mode 0755
   action :create
   recursive true
@@ -63,8 +63,8 @@ if node['joomla']['cli_configure'] &&
                   !File.exists?(File.join(node['joomla']['dir'], '.installed'))
   template File.join(node['joomla']['dir'], 'configuration.php') do
     source 'configuration.php.erb'
-    owner node['php-fpm']['pool']['joomla']['user']
-    group node['php-fpm']['pool']['joomla']['group']
+    owner node['joomla']['user']
+    group node['joomla']['group']
     mode 0644
   end
 

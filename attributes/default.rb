@@ -18,7 +18,7 @@
 
 # Joomla Configuration
 default['joomla']['user'] = 'joomla'
-default['joomla']['group'] = 'joomla'
+default['joomla']['group'] = 'www-data'
 default['joomla']['domain'] = 'example.com'
 default['joomla']['download_url'] = 'http://joomlacode.org/gf/download/frsrel'\
                                     'ease/19143/157504/Joomla_3.2.2-Stable-Fu'\
@@ -138,16 +138,17 @@ default['joomla']['jconfig']['feed_email'] = 'author'
 default['nginx']['default_site_enabled'] = false
 
 # PHP-FPM Configuration
-default['php-fpm']['pools'] = ['joomla']
+default['php-fpm']['pools'] = [
+  {
+    :name => 'joomla',
+    :user => node['joomla']['user'],
+    :group => node['joomla']['group'],
+    :listen_owner => node['joomla']['user'],
+    :listen_group => node['joomla']['group'],
+    :max_children => 50,
+    :process_manager => 'dynamic',
+    :start_servers => 5
+  }
+]
 
-default['php-fpm']['pool']['joomla']['listen'] = '/var/run/php-fpm-joomla.sock'
-default['php-fpm']['pool']['joomla']['allowed_clients'] = ['127.0.0.1']
-default['php-fpm']['pool']['joomla']['user'] = node['joomla']['user']
-default['php-fpm']['pool']['joomla']['group'] = node['joomla']['group']
-default['php-fpm']['pool']['joomla']['process_manager'] = 'dynamic'
-default['php-fpm']['pool']['joomla']['max_children'] = 50
-default['php-fpm']['pool']['joomla']['start_servers'] = 5
-default['php-fpm']['pool']['joomla']['min_spare_servers'] = 5
-default['php-fpm']['pool']['joomla']['max_spare_servers'] = 35
-default['php-fpm']['pool']['joomla']['max_requests'] = 500
-default['php-fpm']['pool']['joomla']['catch_workers_output'] = 'no'
+# default['php-fpm']['pool']['joomla']['listen'] = '/var/run/php-fpm-joomla.sock'
