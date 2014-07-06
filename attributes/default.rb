@@ -150,5 +150,3 @@ default['php-fpm']['pools'] = [
     :start_servers => 5
   }
 ]
-
-# default['php-fpm']['pool']['joomla']['listen'] = '/var/run/php-fpm-joomla.sock'
