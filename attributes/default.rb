@@ -26,7 +26,7 @@ default['joomla']['download_url'] = 'http://joomlacode.org/gf/download/frsrel'\
 default['joomla']['dir'] = File.join('/var/www', node['joomla']['domain'])
 default['joomla']['config_file'] = 'configuration.php'
 default['joomla']['domain_aliases'] = ['www.example.com']
-default['joomla']['system_packages'] = %w[ php5-mysql php5-cli]
+default['joomla']['system_packages'] = %w( php5-mysql php5-cli )
 
 default['joomla']['web_port'] = 80
 
@@ -140,13 +140,13 @@ default['nginx']['default_site_enabled'] = false
 # PHP-FPM Configuration
 default['php-fpm']['pools'] = [
   {
-    :name => 'joomla',
-    :user => node['joomla']['user'],
-    :group => node['joomla']['group'],
-    :listen_owner => node['joomla']['user'],
-    :listen_group => node['joomla']['group'],
-    :max_children => 50,
-    :process_manager => 'dynamic',
-    :start_servers => 5
+    name: 'joomla',
+    user: node['joomla']['user'],
+    group: node['joomla']['group'],
+    listen_owner: node['joomla']['user'],
+    listen_group: node['joomla']['group'],
+    max_children: 50,
+    process_manager: 'dynamic',
+    start_servers: 5
   }
 ]

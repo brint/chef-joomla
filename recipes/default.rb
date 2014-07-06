@@ -49,18 +49,18 @@ unless node['joomla']['download_url'].empty?
   remote_file "#{Chef::Config[:file_cache_path]}/joomla.zip" do
     source node['joomla']['download_url']
     mode '0644'
-    not_if { ::File.exists?(File.join(node['joomla']['dir'], 'index.php')) }
+    not_if { ::File.exist?(File.join(node['joomla']['dir'], 'index.php')) }
   end
   execute 'Unzip Joomla' do
     cwd node['joomla']['dir']
     command "unzip #{Chef::Config[:file_cache_path]}/joomla.zip"
-    not_if { ::File.exists?(File.join(node['joomla']['dir'], 'index.php')) }
+    not_if { ::File.exist?(File.join(node['joomla']['dir'], 'index.php')) }
   end
 end
 
 # Configure Joomla
 if node['joomla']['cli_configure'] &&
-                  !File.exists?(File.join(node['joomla']['dir'], '.installed'))
+                  !File.exist?(File.join(node['joomla']['dir'], '.installed'))
   template File.join(node['joomla']['dir'], 'configuration.php') do
     source 'configuration.php.erb'
     owner node['joomla']['user']

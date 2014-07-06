@@ -30,7 +30,7 @@ bash 'Configure Joomla to use Memcache for Sessions' do
   sed -i 's/public \$session_handler = .*/public $session_handler = \
   \'#{node['joomla']['session_handler']}\';/g' #{node['joomla']['config_file']}
   EOH
-  only_if { File.exists?(node['joomla']['config_file']) }
+  only_if { File.exist?(node['joomla']['config_file']) }
 end
 
 ## TODO: Add handling for setting memcached servers
@@ -38,7 +38,6 @@ end
 
 node['joomla']['memcache']['servers'].each do |srv|
   server, _port = srv.split(':')
-  if server == 'localhost' || server == '127.0.0.1'
-    include_recipe 'joomla::memcached'
-  end
+  next unless server == 'localhost' || server == '127.0.0.1'
+  include_recipe 'joomla::memcached'
 end

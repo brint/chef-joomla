@@ -23,18 +23,18 @@ listen_port = node['joomla']['web_port']
 case node['platform_family']
 when 'debian'
   firewall_rule "Firewall rule, tcp/#{listen_port}" do
-    port      listen_port
-    protocol  :tcp
+    port listen_port
+    protocol :tcp
     direction :in
-    action    :allow
+    action :allow
   end
 when 'rhel'
   iptables_ng_rule 'Firewall rule, tcp/#{listen_port}' do
-    name       'Joomla'
-    chain      'INPUT'
-    table      'filter'
+    name 'Joomla'
+    chain 'INPUT'
+    table 'filter'
     ip_version [4, 6]
-    rule       "-p tcp --dport #{listen_port} -j ACCEPT"
-    action     :create_if_missing
+    rule "-p tcp --dport #{listen_port} -j ACCEPT"
+    action :create_if_missing
   end
 end

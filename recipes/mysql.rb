@@ -35,24 +35,24 @@ end
 # Create Joomla Database
 mysql_database node['joomla']['db']['database'] do
   connection mysql_connection_info
-  action     :create
+  action :create
 end
 
 # Create Joomla Database User
 mysql_database_user node['joomla']['db']['user'] do
   connection mysql_connection_info
-  password   node['joomla']['db']['pass']
-  action     :create
+  password node['joomla']['db']['pass']
+  action :create
 end
 
 # Grant Joomla
 node['joomla']['db']['network_acl'].each do |network|
   mysql_database_user node['joomla']['db']['user'] do
-    connection    mysql_connection_info
-    password      node['joomla']['db']['pass']
+    connection mysql_connection_info
+    password node['joomla']['db']['pass']
     database_name node['joomla']['db']['database']
-    host          network
-    privileges    [:all]
-    action        :grant
+    host network
+    privileges [:all]
+    action :grant
   end
 end
