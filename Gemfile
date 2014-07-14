@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'chef'
 gem 'rubocop'
 gem 'foodcritic', '~>4.0.0'
-gem 'berkshelf'
+gem 'berkshelf', '>= 3.1'
 gem 'strainer'
 gem 'test-kitchen'
 
