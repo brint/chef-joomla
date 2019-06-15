@@ -91,7 +91,7 @@ if node['joomla']['cli_configure'] &&
       EOH
     end
 
-    # Setup Admin User
+    # Set up Admin User
     user_file = '/root/user.sql'
     template user_file do
       source 'user.sql.erb'
@@ -115,7 +115,7 @@ if node['joomla']['cli_configure'] &&
     end
 
   else
-    log "Unable to setup database for #{node['joomla']['db']['type']}"
+    log "Unable to set up database for #{node['joomla']['db']['type']}"
   end
 
   directory 'Remove Joomla Install directory' do
